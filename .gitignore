@@ -2,3 +2,4 @@ raw/
 tmp/
 .DS_Store
 .idea/
+__pycache__/
