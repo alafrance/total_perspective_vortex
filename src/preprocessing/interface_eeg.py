@@ -21,10 +21,8 @@ def load_specific_eeg(directory, subject, experiment, l_freq=8, h_freq=40):
 
     Returns
     -------
-    raw: mne.io.Raw
-        An MNE Raw object containing the EEG data with annotations.
     filtered_raw: mne.io.Raw
-        Filtered raw
+        An MNE Raw object containing the EEG data with annotations and filtered
     """
     subject_dir = os.path.join(directory, subject)
     edf_file = os.path.join(subject_dir, f'{subject}{experiment}.edf')
@@ -38,7 +36,7 @@ def load_specific_eeg(directory, subject, experiment, l_freq=8, h_freq=40):
     # Remove undesirable raw data from low and high frequency
     filtered_raw = raw.copy().filter(l_freq, h_freq, fir_design=fir_design, verbose=False)
 
-    return raw, filtered_raw
+    return filtered_raw
 
 
 def extract_epochs(raw, tmin=0, tmax=1):
@@ -93,3 +91,31 @@ def extract_epochs(raw, tmin=0, tmax=1):
     epoch_data = epoch_data.reshape((n_epochs, n_channels * n_times))
 
     return epoch_data, epoch_labels
+
+
+class EEGData:
+    def __init__(self, epoch_data, epoch_labels, subject_id, experiment_id):
+        """
+        Class to contain EEG data structured
+
+        Parameters
+        ----------
+        epoch_data : numpy.ndarray
+            Extract epoch data from EEG signal
+        epoch_labels : numpy.ndarray
+            Label associated to epoch data
+        subject_id : int
+            Subject id
+        experiment_id : int
+            Experiment Id
+        """
+        self.epoch_data = epoch_data
+        self.epoch_labels = epoch_labels
+        self.subject_id = subject_id
+        self.experiment_id = experiment_id
+
+    def __repr__(self):
+        return f"EEGData(subject_id={self.subject_id}, experiment_id={self.experiment_id}, n_epochs={len(self.epoch_data)})"
+
+    def __iter__(self):
+        return iter([self.epoch_data, self.epoch_labels, self.subject_id, self.experiment_id])

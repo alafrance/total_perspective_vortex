@@ -1,6 +1,6 @@
 import joblib
 import os
-
+from tqdm import tqdm
 
 def get_subject_name_by_id(subject_id):
     if subject_id <= 0 or subject_id > 109 or not isinstance(subject_id, int):
@@ -27,18 +27,19 @@ def save_data_into_pickle_file(data, path):
     joblib.dump(data, path)
 
 
-def get_data_from_pickle_file(path):
+def get_data_from_pickle_file(path, postfix, chunksize=10**6, desc="Loading data"):
+    total_size = os.path.getsize(path)
+
+    with tqdm(total=total_size, desc=desc, unit='M', unit_scale=True) as pbar:
+        pbar.set_postfix_str(postfix)
+        data_bytes = bytearray()
+
+        with open(path, 'rb') as f:
+            while True:
+                chunk = f.read(chunksize)
+                if not chunk:
+                    break
+                data_bytes.extend(chunk)
+                pbar.update(len(chunk))
+
     return joblib.load(path)
-
-
-def load_or_launch_func(filepath, func, *args, **kwargs):
-    if os.path.exists(filepath):
-        data = get_data_from_pickle_file(filepath)
-    else:
-        # print(args[1])
-        # print(**kwargs)
-        data = func(args[0], args[1])
-        # data = []
-        data = []
-        # save_data_into_pickle_file(data, filepath)
-    return data
