@@ -1,0 +1,57 @@
+[tool.poetry]
+name = "total-perspective-vortex"
+version = "0.1.0"
+description = "Brain Computer Interface EEG"
+authors = ["Alexis <alexislafrance42@outlook.fr>"]
+readme = "README.md"
+packages = [
+    { include = "src" },
+    { include = "scripts" }
+]
+[tool.poetry.dependencies]
+python = "^3.12.7"
+argcomplete = "^3.5.1"
+certifi = "^2024.8.30"
+charset-normalizer = "^3.4.0"
+click = "^8.1.7"
+contourpy = "^1.3.0"
+cycler = "^0.12.1"
+decorator = "^5.1.1"
+fonttools = "^4.54.1"
+idna = "^3.10"
+jinja2 = "^3.1.4"
+joblib = "^1.4.2"
+kiwisolver = "^1.4.7"
+lazy-loader = "^0.4"
+markupsafe = "^3.0.2"
+matplotlib = "^3.9.2"
+mne = "^1.8.0"
+numpy = "^2.1.2"
+packaging = "^24.1"
+pillow = "^11.0.0"
+pip = "^24.2"
+pipx = "^1.7.1"
+platformdirs = "^4.3.6"
+pooch = "^1.8.2"
+pyparsing = "^3.2.0"
+python-dateutil = "^2.9.0.post0"
+pywavelets = "^1.7.0"
+requests = "^2.32.3"
+scikit-learn = "^1.5.2"
+scipy = "^1.14.1"
+setuptools = "^75.2.0"
+six = "^1.16.0"
+threadpoolctl = "^3.5.0"
+tqdm = "^4.66.5"
+urllib3 = "^2.2.3"
+userpath = "^1.9.2"
+wheel = "^0.44.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+main = "scripts.main:main"
+start = "scripts.main:main"

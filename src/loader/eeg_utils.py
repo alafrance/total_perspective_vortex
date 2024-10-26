@@ -1,6 +1,7 @@
 import os
 
 import mne
+mne.set_log_level('ERROR')
 
 
 def load_specific_eeg(directory, subject, experiment, l_freq=8, h_freq=40):
