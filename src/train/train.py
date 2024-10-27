@@ -4,11 +4,10 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.metrics import make_scorer, balanced_accuracy_score
 from sklearn.model_selection import StratifiedKFold, GridSearchCV
 from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
 from src.loader.utils import save_data_into_pickle_file, get_data_from_pickle_file
 from src.loader import pipeline_loader_data
-# from src.preprocessing.CustomLDA import CustomLDA
 from src.train.CustomSCP import CustomSCP
-from src.train.CustomStandardScaler import CustomStandardScaler
 
 
 def eeg_train(subjects,
@@ -76,7 +75,7 @@ def cross_validation(train_val_test_data):
 
 def config_pipeline():
     pipeline = Pipeline([
-        ('scaler', CustomStandardScaler()),
+        ('scaler', StandardScaler()),
         ('scp', CustomSCP()),
         ('classifier', LinearDiscriminantAnalysis())
     ])
