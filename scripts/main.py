@@ -1,36 +1,41 @@
+import os.path
 import warnings
 from scripts.cli_args import parse_cli_arguments
-from src.train import eeg_train
+from src.utils_pickle import save_data_into_pickle_file, get_data_from_pickle_file
+from src import eeg_bci_train
+from src import eeg_bci_predict
 
 
 def main():
     defaults = {
-        'mode': 'predict',
-        'subjects': list(range(1, 110)),
-        'experiments': [3, 4, 7, 8, 11, 12],
+        'mode': 'train',
+        'subjects': list(range(1, 20)),
+        'experiments': [3, 4, 7, 8, 11, 12],  # Task 1, 2
+        # 'experiments': [5, 6, 9, 10, 13, 14],  # Task 3, 4
         'force_train': False,
-        'data_dir': "./data/raw/",
-        'output_model_file': './data/models/eeg_model.pkl',
+        'data_dir': "../data/raw/",
+        'model_file': '../data/models/eeg_model.pkl',
         'no_pickle': False
     }
     filter_warnings()
     args = parse_cli_arguments(defaults)
     try:
         if args.mode == "train":
-            eeg_train(subjects=args.subjects,
-                      experiments=args.experiments,
-                      data_dir=args.data_dir,
-                      output_model_file=args.output_model_file,
-                      force_train=args.force_train,
-                      no_pickle=args.no_pickle)
-        elif args.mode == "predict":
-            print("Predict bip bip bip...")
-        else:
-            raise ValueError("Error Mode: Train or predict")
+            if os.path.exists(args.model_file) and args.force_train:
+                os.remove(args.model_file)
+            model = eeg_bci_train(subjects=args.subjects,
+                                  experiments=args.experiments,
+                                  data_dir=args.data_dir)
+            if not args.no_pickle:
+                save_data_into_pickle_file(model, args.model_file, postfix="Model", desc="Model saved")
+        if args.mode == "predict" or args.mode == 'all':
+            model = get_data_from_pickle_file(args.model_file, postfix="Model", desc="Model loaded")
+            eeg_bci_predict(subjects=args.subjects,
+                            experiments=args.experiments,
+                            data_dir=args.data_dir,
+                            model=model)
     except KeyboardInterrupt:
         print("BCI EEG Interrupt")
-    except ValueError as e:
-        print(e)
     except FileNotFoundError as e:
         print(f'{e.args[1]}: {e.filename}')
 

@@ -39,10 +39,10 @@ def parse_cli_arguments(defaults):
                         type=str,
                         default=defaults['data_dir'],
                         help="The data directory for training or predict")
-    parser.add_argument("--output_model_file",
+    parser.add_argument("--model_file",
                         type=str,
-                        default=defaults['output_model_file'],
-                        help="The output model pickle file")
+                        default=defaults['model_file'],
+                        help="The model pickle file")
     parser.add_argument('--no_pickle',
                         action='store_true',
                         default=defaults['no_pickle'],
