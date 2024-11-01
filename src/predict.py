@@ -1,11 +1,24 @@
+import os.path
 import time
 from mne.io import read_raw_edf
 from tqdm import tqdm
 from src.loader import edf_file, standardize_raw, get_epoch_and_labels
 from sklearn.metrics import accuracy_score
 
+from src.utils_pickle import get_data_from_pickle_file
 
-def eeg_bci_predict(data_dir, subjects, experiments, model):
+
+def predict_bonus(process_dir, model):
+    process_filename = os.path.join(process_dir, "test_data_bonus_dataset.pkl")
+    (X_test, y_test) = get_data_from_pickle_file(process_filename, desc="Loading test data bonus dataset")
+    y_pred = model.predict(X_test)
+    print(f"Mean accuracy: {accuracy_score(y_test, y_pred):.3f}")
+
+
+def eeg_bci_predict(data_dir, subjects, experiments, model, process_dir, bonus_dataset):
+    if bonus_dataset:
+        predict_bonus(process_dir, model)
+        return
     predictions = []
     true_labels = []
     for subject in tqdm(subjects, desc="Predict subjects", dynamic_ncols=True, unit='M', unit_scale=True):

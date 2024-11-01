@@ -15,18 +15,22 @@ def parse_cli_arguments(defaults):
                         help='Mode of operation: train or predict')
 
     # Subject or experiments id
+    parser.add_argument('--bonus_dataset',
+                        action='store_true',
+                        default=defaults['bonus_dataset'],
+                        help='Use bonus dataset (subjects and experiments are ignored)')
     parser.add_argument('--subjects',
                         type=int,
                         nargs='+',
                         default=defaults['subjects'],
                         metavar='ID',
-                        help='ID(s) of the subject')
+                        help='ID(s) of the subject (only for mandatory dataset)')
     parser.add_argument('--experiments',
                         type=int,
                         nargs='+',
                         default=defaults['experiments'],
                         metavar='ID',
-                        help='ID(s) of the experiment')
+                        help='ID(s) of the experiment (only for mandatory dataset)')
 
     # Train
     parser.add_argument('--force_train',
@@ -39,6 +43,10 @@ def parse_cli_arguments(defaults):
                         type=str,
                         default=defaults['data_dir'],
                         help="The data directory for training or predict")
+    parser.add_argument('--process_dir',
+                        type=str,
+                        default=defaults['process_dir'],
+                        help="The process directory for bonus dataset")
     parser.add_argument("--model_file",
                         type=str,
                         default=defaults['model_file'],
