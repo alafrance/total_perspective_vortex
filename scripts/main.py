@@ -9,13 +9,13 @@ from src import eeg_bci_predict
 def main():
     defaults = {
         'mode': 'train',
-        'subjects': list(range(1, 30)),
+        'subjects': list(range(1, 20)),
         # 'experiments': [3, 4, 7, 8, 11, 12],  # Task 1, 2
         'experiments': [5, 6, 9, 10, 13, 14],  # Task 3, 4
         'force_train': False,
-        'data_dir': "../data/raw/",
-        'process_dir': "../data/processed/",
-        'model_file': '../data/models/eeg_model.pkl',
+        'data_dir': "data/raw/",
+        'process_dir': "data/processed/",
+        'model_file': 'data/models/eeg_model.pkl',
         'no_pickle': False,
         'bonus_dataset': False
     }
